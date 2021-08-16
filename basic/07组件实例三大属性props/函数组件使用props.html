@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对props进行限制</title>
+    <style>
+        #test {
+            background: orange;
+        }
+    </style>
+</head>
+<body>
+<!--容器-->
+<div id="test"></div>
+
+<!-- 引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+
+<!-- 引入react-dom,用于支持react操作dom-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+
+<!-- 引入babel ,用于将jsx转为js-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 引入prop-type ,用于对组件标签属性进行限制-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    function Person(props) {
+        console.log(props)
+        const {name, age} = props
+        return (
+            <ul>
+                <li>姓名:{name}</li>
+                <li>姓別:{age}</li>
+            </ul>
+        )
+    }
+    Person.propTypes = {
+        name: PropTypes.string.isRequired
+    }
+    const obj = {
+        name: '小明',
+        age: 23
+    }
+    ReactDOM.render(<Person {...obj}/>, document.getElementById('test'))
+
+
+</script>
+</body>
+</html>

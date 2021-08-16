@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对props进行限制</title>
+    <style>
+        #test {
+            /*background: orange;*/
+        }
+    </style>
+</head>
+<body>
+<!--容器-->
+<div id="test"></div>
+
+<!-- 引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+
+<!-- 引入react-dom,用于支持react操作dom-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+
+<!-- 引入babel ,用于将jsx转为js-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 引入prop-type ,用于对组件标签属性进行限制-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    class Demo extends React.Component {
+        input1Ref = React.createRef()
+        input2Ref = React.createRef()
+        showData = () => {
+            const {value} = this.input1Ref.current
+            alert(value)
+            console.log(this.input1Ref.current.value)
+        }
+        showData2 = () => {
+            const {value} = this.input2Ref.current
+            alert(value)
+            console.log(this.input2Ref.current.value)
+        }
+        render() {
+            return (
+                <div>
+                    <input ref={this.input1Ref} type="text" placeholder="点击按钮提示数据"/>&nbsp;
+                    <button onClick={this.showData}>点我提示左侧数据</button>
+                    &nbsp;
+                    <input ref={this.input2Ref} onBlur={this.showData2} type="text" placeholder="失去焦点提示数据"/>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Demo/>, document.getElementById('test'))
+
+</script>
+</body>
+</html>

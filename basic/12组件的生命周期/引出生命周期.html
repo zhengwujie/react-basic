@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对props进行限制</title>
+    <style>
+        #test {
+            /*background: orange;*/
+        }
+    </style>
+</head>
+<body>
+<!--容器-->
+<div id="test"></div>
+
+<!-- 引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+
+<!-- 引入react-dom,用于支持react操作dom-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+
+<!-- 引入babel ,用于将jsx转为js-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 引入prop-type ,用于对组件标签属性进行限制-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    class Demo extends React.Component {
+        state = {
+            opacity: 1,
+        }
+
+        // 组件挂载
+        componentDidMount() {
+            this.time = setInterval(() => {
+                let {opacity} = this.state
+                opacity -= 0.1
+                if (opacity <= 0) opacity = 1
+                this.setState({opacity})
+            }, 200)
+        }
+        // 组件卸载之前执行
+        componentWillUnmount() {
+            clearInterval(this.time)
+        }
+
+        death = () => {
+            // clearInterval(this.time)
+            ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+        }
+
+        render() {
+            return (
+                <div>
+                    <h2 style={{opacity: this.state.opacity}}>我学不会react</h2>
+                    <button onClick={this.death}>我不活了</button>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Demo/>, document.getElementById('test'))
+</script>
+</body>
+</html>

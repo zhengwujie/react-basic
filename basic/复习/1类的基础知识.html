@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script type="text/javascript">
+    // 创建一个Person类
+    class Person {
+        //构造器方法
+        constructor(name, age) {
+            // 构造器中的this ==> 类的实例对象
+            this.name = name
+            this.age = age
+        }
+
+        // 一般方法
+        say() {
+            console.log(`我叫${this.name}`, `我的年龄${this.age}`)
+        }
+    }
+
+    // const p1 = new Person('xiaoming',12);
+    // const p2 = new Person('xiaohong',123);
+    // console.log(p1);
+    // console.log(p2);
+    // p1.say()
+    // p2.say()
+    //-------------------------------------------------
+    class Student extends Person {
+        constructor(name, age, grade) {
+            // 继承父类属性
+            super(name, age)
+            this.grade = grade
+        }
+        // 重写从父类Person的方法say
+        say() {
+            console.log(`我叫${this.name}`, `我的年龄${this.age}`,`我的年级是${this.grade}`)
+        }
+    }
+
+    const s1 = new Student('xiaozhang', 45, '高一')
+    s1.say()
+</script>
+</body>
+</html>

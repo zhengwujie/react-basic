@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对props进行限制</title>
+    <style>
+        #test {
+            background: orange;
+        }
+    </style>
+</head>
+<body>
+<!--容器-->
+<div id="test"></div>
+
+<!-- 引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+
+<!-- 引入react-dom,用于支持react操作dom-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+
+<!-- 引入babel ,用于将jsx转为js-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 引入prop-type ,用于对组件标签属性进行限制-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    class Person1 extends React.Component {
+        render() {
+            const {list} = this.props
+            return (
+                <ul>
+                    {
+                        list.map((item, index) => {
+                            return (<li key={index}>
+                                性名:{item.name}，性别:{item.sex}，年龄:{Number(item.age) + 1}
+                            </li>)
+                        })
+                    }
+
+                </ul>
+            )
+        }
+    }
+
+    class Person extends React.Component {
+        //isRequired必填
+        static propTypes = {
+            name: PropTypes.string.isRequired,
+            age: PropTypes.number,
+            speak: PropTypes.func // 限制speak為function
+        }
+        // 默認值
+        static defaultProps = {
+            name: '吊毛'
+        }
+
+        render() {
+            return (
+                <ul>
+                    <li>姓名:{this.props.name}</li>
+                    <li>年龄:{this.props.age}</li>
+                </ul>
+            )
+        }
+    }
+
+    const list = [{
+        name: '小明1',
+        age: 11,
+        sex: '男'
+    }, {
+        name: '小明2',
+        age: '12',
+        sex: '男'
+    }, {
+        name: '小明3',
+        age: 13,
+        sex: '男'
+    }]
+    const obj = {age: 56}
+    // ReactDOM.render(<Person list={list}/>, document.getElementById('test'))
+    ReactDOM.render(<Person {...obj}/>, document.getElementById('test'))
+
+
+</script>
+</body>
+</html>

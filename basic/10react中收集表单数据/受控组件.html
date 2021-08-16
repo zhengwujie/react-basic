@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对props进行限制</title>
+    <style>
+        #test {
+            /*background: orange;*/
+        }
+    </style>
+</head>
+<body>
+<!--容器-->
+<div id="test"></div>
+
+<!-- 引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+
+<!-- 引入react-dom,用于支持react操作dom-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+
+<!-- 引入babel ,用于将jsx转为js-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 引入prop-type ,用于对组件标签属性进行限制-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    class Login extends React.Component {
+        state = {
+            username: '',
+            password: ''
+        }
+        handleSubmit = (event) => {
+            event.preventDefault()
+            const {username,password} = this.state
+            alert(`用户名：${username},密码：${password}`)
+        }
+        usernameChange = (e) => {
+            this.setState({username: e.target.value})
+        }
+        passwordChange = (e) => {
+            this.setState({password: e.target.value})
+        }
+
+        render() {
+            return (
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" onChange={this.usernameChange} placeholder="用户名"/>
+                    <input type="password" onChange={this.passwordChange} placeholder="密码"/>
+                    <button>提交</button>
+                </form>
+            )
+        }
+    }
+
+    ReactDOM.render(<Login/>, document.getElementById('test'))
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对props进行限制</title>
+    <style>
+        #test {
+            /*background: orange;*/
+        }
+    </style>
+</head>
+<body>
+<!--容器-->
+<div id="test"></div>
+
+<!-- 引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+
+<!-- 引入react-dom,用于支持react操作dom-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+
+<!-- 引入babel ,用于将jsx转为js-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 引入prop-type ,用于对组件标签属性进行限制-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    /*
+        1.初始化阶段：由ReactDOM.render()触发------初始渲染
+            a.constructor()
+            b.componentWillMount() 组件挂载之前调用
+            c.render()
+            d.componentDidMount() 组件更新完毕调用
+
+        2.更新阶段：由组件内部this.setState()或者组件重新render触发
+            a.shouldComponentUpdate()   控制组件更新的阀门
+            b.componentWillUpdate()     组件更新之前调用
+            c.render()
+            d.componentDidUpdate()      组件更新完毕调用
+
+        3.卸载组件：由ReactDOM.unmountComponentAtNode()触发
+            ComponentWillUnmount()
+     */
+    class Sum extends React.Component {
+        /*
+        * 页面初始化优先调起-->构造器constructor-->组件挂载之前调用componentWillMount-->更新rend组件内容-->最后调起组件挂载完毕钩子componentDidMount
+        *
+        * 更新setState --> 优先监控shouldComponentUpdate阀门是否开启（return true开启/false关闭）-->开启阀门-->调起组件即将更新的钩子componentDidUpdate-->
+        *               最后调起组件挂载完毕钩子-->componentDidMount
+        *
+        * */
+
+
+        constructor(props) {
+            console.log('1constructor')
+            super(props)
+            this.state = {
+                count: 0,
+                isHot: true
+            }
+        }
+
+        add = () => {
+            const {count} = this.state
+            this.setState({count: count + 1})
+        }
+
+        uninstall = () => {
+            ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+        }
+
+        force = () => {
+            this.forceUpdate()
+        }
+
+        // 组件挂载之前调用
+        componentWillMount() {
+            console.log('2componentWillMount')
+        }
+
+
+        // 组件将要卸载的钩子
+        componentWillUnmount() {
+            console.log('componentWillUnmount')
+        }
+
+        // 控制组件更新的阀门
+        shouldComponentUpdate(nextProps, nextState, nextContext) {
+            console.log(nextProps, nextState, nextContext)
+            console.log('shouldComponentUpdate')
+            return true
+        }
+
+        // 组件将要更新的钩子
+        componentDidUpdate(prevProps, prevState, snapshot) {
+            console.log('componentDidUpdate')
+        }
+
+        // 组件更新完毕的钩子
+        componentDidMount() {
+            console.log('componentDidMount')
+        }
+
+
+        // 组件挂载完毕调用
+        componentDidMount() {
+            console.log('4componentDidMount')
+        }
+
+        render() {
+            console.log('3 render')
+            const {count, isHot} = this.state
+            return (
+                <div>
+                    <h2>今天天气很{isHot}</h2>
+                    <h2>求和等于{count}</h2>
+                    <button onClick={this.add}>点击我+1</button>
+                    <button onClick={this.uninstall}>卸载组件</button>
+                    <button onClick={this.force}>不更改任何状态中的数据，强制更新一下</button>
+                </div>
+            )
+        }
+    }
+    // 父组件
+    class A extends React.Component {
+        state = {
+            carName: '奔驰'
+        }
+        changeCar = () => {
+            // const {carName} = this.state
+            this.setState({carName: '奥迪'})
+        }
+
+        render() {
+            return (
+                <div>
+                    <h2>A</h2>
+                    <button onClick={this.changeCar}>我想换车</button>
+                    <B carName={this.state.carName}></B>
+                </div>
+            )
+        }
+    }
+    // 子组件
+    class B extends React.Component {
+        constructor(props){
+            console.log('constructor-B')
+            super(props)
+        }
+        uninstallB = () => {
+            ReactDOM.render(document.getElementById('test'))
+        }
+
+        componentWillMount() {
+            console.log('componentWillMount')
+        }
+
+        // 组件将要接收新的props的钩子（页面渲染第一次不执行，第二次接收才执行）
+        componentWillReceiveProps(nextProps, nextContext) {
+            console.log('componentWillReceiveProps')
+        }
+
+        // 控制组件更新的阀门
+        shouldComponentUpdate(nextProps, nextState, nextContext) {
+            console.log('shouldComponentUpdate')
+            return true
+        }
+
+        // 组件将要更新
+        componentDidUpdate(prevProps, prevState, snapshot) {
+            console.log('componentDidUpdate')
+        }
+
+        // 组件挂载完毕
+        componentDidMount() {
+            console.log('componentDidMount')
+        }
+
+        // 组件将要销毁
+        componentWillUnmount() {
+            console.log('componentWillUnmount')
+        }
+
+        render() {
+            console.log('render-B')
+            const {carName} = this.props
+            return (
+                <div>
+                    B
+                    <span>{carName}</span>
+                    <button onClick={this.uninstallB}>卸载组件</button>
+                </div>
+            )
+        }
+    }
+
+    // ReactDOM.render(<A/>, document.getElementById('test'))
+    ReactDOM.render(<Sum/>, document.getElementById('test'))
+</script>
+</body>
+</html>

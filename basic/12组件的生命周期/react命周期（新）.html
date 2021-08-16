@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对props进行限制</title>
+    <style>
+        #test {
+            /*background: orange;*/
+        }
+    </style>
+</head>
+<body>
+<!--容器-->
+<div id="test"></div>
+
+<!-- 引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+
+<!-- 引入react-dom,用于支持react操作dom-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+
+<!-- 引入babel ,用于将jsx转为js-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 引入prop-type ,用于对组件标签属性进行限制-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    class Sum extends React.Component {
+
+        constructor(props) {
+            console.log('constructor')
+            super(props)
+            this.state = {
+                count: 0,
+                isHot: true
+            }
+        }
+
+        add = () => {
+            const {count} = this.state
+            this.setState({count: count + 1})
+        }
+
+        uninstall = () => {
+            ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+        }
+
+        force = () => {
+            this.forceUpdate()
+        }
+
+        // 若state的值在任何时候都取决于props,那么可以使用getDerivedStateFromProps
+        static getDerivedStateFromProps(props, state) {
+            console.log('getDerivedStateFromProps', props, state)
+            return null
+        }
+
+        // 在更新之前获取快照
+        getSnapshotBeforeUpdate(prevProps, prevState) {
+            console.log('getSnapshotBeforeUpdate')
+            return 'react基础'
+        }
+
+        // 组件将要卸载的钩子
+        componentWillUnmount() {
+            console.log('componentWillUnmount')
+        }
+
+        // 控制组件更新的阀门
+        shouldComponentUpdate(nextProps, nextState, nextContext) {
+            console.log(nextProps, nextState, nextContext)
+            console.log('shouldComponentUpdate')
+            return true
+        }
+
+        // 组件将要更新的钩子
+        componentDidUpdate(prevProps, prevState, snapshot) {
+            console.log('componentDidUpdate', prevProps, prevState, snapshot)
+        }
+
+        // 组件挂载完毕调用
+        componentDidMount() {
+            console.log('组件挂载完毕调用componentDidMount')
+        }
+
+        render() {
+            console.log('render')
+            const {count, isHot} = this.state
+            return (
+                <div>
+                    <h2>今天天气很{isHot}</h2>
+                    <h2>求和等于{count}</h2>
+                    <button onClick={this.add}>点击我+1</button>
+                    <button onClick={this.uninstall}>卸载组件</button>
+                    <button onClick={this.force}>不更改任何状态中的数据，强制更新一下</button>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(<Sum/>, document.getElementById('test'))
+</script>
+</body>
+</html>

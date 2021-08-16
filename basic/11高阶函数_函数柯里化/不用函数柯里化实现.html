@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对props进行限制</title>
+    <style>
+        #test {
+            /*background: orange;*/
+        }
+    </style>
+</head>
+<body>
+<!--容器-->
+<div id="test"></div>
+
+<!-- 引入react核心库-->
+<script type="text/javascript" src="../js/react.development.js"></script>
+
+<!-- 引入react-dom,用于支持react操作dom-->
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+
+<!-- 引入babel ,用于将jsx转为js-->
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<!-- 引入prop-type ,用于对组件标签属性进行限制-->
+<script type="text/javascript" src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    //#region
+    /**
+     * 高阶函数：如果一个函数符合下面2个规范中的任何一个，那该函数就是高阶函数
+     *      1.接受的参数是一个函数，那么A就可以称之为高阶函数
+     *      2.若A函数，调用的返回值依然是一个函数，那么A就可以称之为高阶函数
+     *
+     * 函數的柯里化：通过函数调用继续返回函数的方式，实现多次接受参数统一处理的函数编码形式
+     */
+        //#endregion
+
+    class Login extends React.Component {
+        state = {
+            username: '',
+            password: ''
+        }
+        handleSubmit = (event) => {
+            event.preventDefault()
+            const {username, password} = this.state
+            alert(`用户名：${username},密码：${password}`)
+        }
+
+        // 保存表单数据状态
+        saveFormData = (field, event) => {
+            this.setState({[field]: event.target.value})
+        }
+
+        render() {
+            return (
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" onChange={event => this.saveFormData('username', event)} placeholder="用户名"/>
+                    <input type="password" onChange={event => this.saveFormData('password', event)} placeholder="密码"/>
+                    <button>提交</button>
+                </form>
+            )
+        }
+    }
+
+    ReactDOM.render(<Login/>, document.getElementById('test'))
+</script>
+</body>
+</html>

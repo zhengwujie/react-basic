@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script type="text/javascript">
+    let arr1 = [1, 3, 5, 7, 9]
+    let arr2 = [2, 4, 6, 8, 10]
+    console.log([...arr2, ...arr1]) // 展开一个数组
+    let arr3 = [...arr2, ...arr1] //arr1合并arr2生成一个新
+    console.log(arr3)
+
+    // 求和
+    function num(...number) {
+        // preValue 上一个值，curValue当前值
+        return number.reduce((preValue, curValue) => {
+            /**
+             * 1,2
+             * 3,3
+             * 6,4
+             */
+            console.log(preValue, curValue)
+            return preValue + curValue
+        })
+    }
+
+    console.log('num', num(1, 2, 3, 4))
+
+    let person = {name: 'jay', age: 18}
+    // 可以复制对象
+    // 对象处理
+    let person1 = {...person}
+    person.sex = '男'
+    console.log('person', person)
+    console.log('person1', person1)
+
+    // 覆盖已有的值，合并父级没有的属性
+    let person2 = {...person, name: 'xiaohong', address: '大地'}
+    console.log('person2', person2)
+    // 可以复制数组
+    let arrList = [{name: 'jay', age: 18}]
+    let arrList1 = [...arrList]
+    arrList.push({
+        name: 'xiaoming',
+        age: 23
+    })
+    console.log('arrList', arrList)
+    console.log('arrList1', arrList1)
+</script>
+</body>
+</html>
