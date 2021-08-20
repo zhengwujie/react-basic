@@ -39,21 +39,36 @@ export default class App extends Component {
     // 刪除一條todos
     delTodo = (id) => {
         const {todos} = this.state
-        const index = todos.findIndex((todoObj) => {
-            return todoObj.id === id
+        // const index = todos.findIndex((todoObj) => {
+        //     return todoObj.id === id
+        // })
+        // todos.splice(index, 1)
+        // this.setState({todos})
+
+        const newTodo = todos.filter(item => {
+            return item.id !== id
         })
-        todos.splice(index, 1)
-        this.setState({todos})
+        this.setState({todos: newTodo})
     }
 
     // 清除所有todo已完成状态
     clearALLTodos = () => {
         const {todos} = this.state
-        const newTodos = todos.map((todoObj) => {
-            todoObj.done = false
-            return todoObj
+        const newTodos = todos.filter((todoObj) => {
+            return !todoObj.done
         })
-        console.log(newTodos)
+        this.setState({todos: newTodos})
+    }
+
+    //----------------
+
+    // 全选
+    chooseAllDone = (done) => {
+        const {todos} = this.state
+        const newTodos = todos.map(item => {
+            return {...item, done}
+        })
+        console.log('newTodos', newTodos)
         this.setState({todos: newTodos})
     }
 
@@ -64,7 +79,7 @@ export default class App extends Component {
                 <div className="todo-wrap">
                     <Header addTodo={this.addTodo}/>
                     <List todos={todos} changeTodo={this.changeTodo} delTodo={this.delTodo}/>
-                    <Footer clearALLTodos={this.clearALLTodos}/>
+                    <Footer todos={todos} clearALLTodos={this.clearALLTodos} chooseAllDone={this.chooseAllDone}/>
                 </div>
             </div>
         )

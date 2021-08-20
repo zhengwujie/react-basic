@@ -24,7 +24,9 @@ export default class Item extends Component {
 
     delTodo = (id) => {
         return () => {
-            this.props.delTodo(id)
+            if(window.confirm("确定删除吗？")){
+                this.props.delTodo(id)
+            }
         }
     }
 
@@ -37,7 +39,7 @@ export default class Item extends Component {
                 onMouseEnter={this.handleMouse(true)}
                 style={{backgroundColor: mouse ? '#ddd' : 'white'}}>
                 <label>
-                    <input type="checkbox" defaultChecked={done} onChange={this.changeTodo(id)}/>
+                    <input type="checkbox" checked={done} onChange={this.changeTodo(id)}/>
                     <span>{name}</span>
                 </label>
                 <button className="btn btn-danger" style={{display: mouse ? 'block' : 'none'}}
