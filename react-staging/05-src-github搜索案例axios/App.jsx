@@ -4,7 +4,12 @@ import Search from './components/search/index'
 import axios from "axios";
 
 class App extends Component {
-
+    state = {
+        list: [], //user初始数据
+        isFirst: true,  //第一次进入页面
+        isLoading: false,  //正在加载中
+        err: ''  //错误提示
+    }
     searchFn = (v) => {
         const that = this
         that.setState({isFirst: false, isLoading: true})
@@ -20,8 +25,8 @@ class App extends Component {
     render() {
         return (
             <div className="container">
-                <Search/>
-                <List/>
+                <Search searchFn={this.searchFn}/>
+                <List {...this.state}/>
             </div>
         );
     }

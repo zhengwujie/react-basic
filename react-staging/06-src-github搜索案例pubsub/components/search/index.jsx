@@ -1,34 +1,16 @@
 import React, {Component} from 'react';
-// import axios from "axios";
+import axios from "axios";
 import PubSub from 'pubsub-js'
-
 class Search extends Component {
     searchFn = () => {
         const {keyWordElement: {value: keyWord}} = this
         PubSub.publish('newSend', {isFirst: false, isLoading: true})
-        //#region
-        //使用axios发送请求
-        // axios.get(`/api1/search/users?q=${keyWord}`).then(res => {
-        //     const {items: list} = res.data
-        //     PubSub.publish('newSend', {isLoading: false, list})
-        // }).catch(err => {
-        //     PubSub.publish('newSend', {isLoading: false, err: err.messages})
-        // })
-        //endregin
-
-        //使用fetch发送请求
-        fetch(`/api1/search/users?q=${keyWord}`).then(res => {
-            return res.json()
-        }).then(res => {
-            console.log('res', res)
-            const {items: list} = res
+        axios.get(`/api1/search/users?q=${keyWord}`).then(res => {
+            const {items: list} = res.data
             PubSub.publish('newSend', {isLoading: false, list})
         }).catch(err => {
-            console.log('err', err)
             PubSub.publish('newSend', {isLoading: false, err: err.messages})
         })
-
-
     }
 
     render() {
