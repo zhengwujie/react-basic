@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {Route, Switch} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import about from './pages/about'
 import home from './pages/home'
-import MyNavLink from './components/MyNavLink'
-
+import  MyNavLink from './components/MyNavLink'
 class App extends Component {
 
     render() {
@@ -28,11 +27,8 @@ class App extends Component {
                     <div className="col-xs-6">
                         <div className="panel">
                             <div className="panel-body">
-                                <Switch>
-                                    <Route path="/about" component={about}/>
-                                    <Route path="/home" component={home}/>
-                                </Switch>
-
+                                <Route path="/about" component={about}/>
+                                <Route path="/home" component={home}/>
                             </div>
                         </div>
                     </div>

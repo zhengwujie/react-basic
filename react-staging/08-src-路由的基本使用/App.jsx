@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {Route, Switch} from 'react-router-dom'
-import about from './pages/about'
-import home from './pages/home'
-import MyNavLink from './components/MyNavLink'
-
+import {Link,Route} from 'react-router-dom'
+import './bootstrap.css'
+import about from './components/about'
+import home from './components/home'
 class App extends Component {
 
     render() {
@@ -19,20 +18,15 @@ class App extends Component {
                         <div className="list-group">
                             {/*<a className="list-group-item" href="./about.html">About</a>*/}
                             {/*<a className="list-group-item active" href="./home.html">Home</a>*/}
-                            {/*<NavLink className="list-group-item" to="/about">About</NavLink>*/}
-                            {/*<NavLink className="list-group-item" to="/home">Home</NavLink>*/}
-                            <MyNavLink to="/about">About</MyNavLink>
-                            <MyNavLink to="/home">Home</MyNavLink>
+                            <Link className="list-group-item" to="/about">About</Link>
+                            <Link className="list-group-item" to="/home">Home</Link>
                         </div>
                     </div>
                     <div className="col-xs-6">
                         <div className="panel">
                             <div className="panel-body">
-                                <Switch>
-                                    <Route path="/about" component={about}/>
-                                    <Route path="/home" component={home}/>
-                                </Switch>
-
+                                <Route path="/about" component={about}/>
+                                <Route path="/home" component={home}/>
                             </div>
                         </div>
                     </div>

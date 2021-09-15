@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import PubSub from 'pubsub-js'
 
 class Search extends Component {
-    searchFn = () => {
+    searchFn = async () => {
         const {keyWordElement: {value: keyWord}} = this
         PubSub.publish('newSend', {isFirst: false, isLoading: true})
         //#region
@@ -17,16 +17,28 @@ class Search extends Component {
         //endregin
 
         //使用fetch发送请求
-        fetch(`/api1/search/users?q=${keyWord}`).then(res => {
-            return res.json()
-        }).then(res => {
-            console.log('res', res)
-            const {items: list} = res
+        // fetch(`/api1/search/users?q=${keyWord}`).then(res => {
+        //     return res.json()
+        // }).then(res => {
+        //     console.log('res', res)
+        //     const {items: list} = res
+        //     PubSub.publish('newSend', {isLoading: false, list})
+        // }).catch(err => {
+        //     console.log('err', err)
+        //     PubSub.publish('newSend', {isLoading: false, err: err.messages})
+        // })
+
+        try {
+
+            const res = await fetch(`/api1/search/users?q=${keyWord}`)
+            const data = await res.json()
+            const {items: list} = data
             PubSub.publish('newSend', {isLoading: false, list})
-        }).catch(err => {
+            console.log('data', data)
+        } catch (err) {
+            PubSub.publish('newSend', {isLoading: false, err: err})
             console.log('err', err)
-            PubSub.publish('newSend', {isLoading: false, err: err.messages})
-        })
+        }
 
 
     }
